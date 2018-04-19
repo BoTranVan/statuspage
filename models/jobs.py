@@ -20,23 +20,34 @@ class job(db.Model):
 
     reserved     | smallint               | not null
 
-    reserved_at  | integer                | 
+    reserved_at  | integer                |
 
     available_at | integer                | not null
 
     created_at   | integer                | not null
     """
-    
+
     __tablename__ = "jobs"
 
     id = db.Column(db.Integer, primary_key=True)
     queue = db.Column(db.String(255), nullable=False)
     payload = db.Column(db.Text, nullable=False)
     attempts = db.Column(db.Integer, nullable=False)
-    reversed = db.Column(db.Integer, nullable=False)
+    reserved = db.Column(db.Integer, nullable=False)
     reserved_at = db.Column(db.String(26), nullable=False)
     available_at = db.Column(db.String(26), nullable=False)
     created_at = db.Column(db.String(26), default=now)
+
+    def __init__(self, id, queue, payload, attempts, reserved, reserved_at, available_at, created_at):
+        self.id = id
+        self.queue = queue
+        self.payload = payload
+        self.attempts = attempts
+        self.reserved = reserved
+        self.reserved_at = reserved_at
+        self.available_at = available_at
+        self.created_at = created_at
+
 
 class failed_job(db.Model):
     """
@@ -60,3 +71,10 @@ class failed_job(db.Model):
     queue = db.Column(db.Text, nullable=False)
     payload = db.Column(db.Text, nullable=False)
     failed_at = db.Column(db.String(26), nullable=False)
+
+    def __init__(self, id, connection, queue, payload, failed_at):
+        self.id = id
+        self.connection = connection
+        self.queue = queue
+        self.payload = payload
+        self.failed_at = failed_at

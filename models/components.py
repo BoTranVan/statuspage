@@ -24,11 +24,11 @@ class component(db.Model):
 
     group_id    | integer                        | not null
 
-    created_at  | timestamp(0) without time zone | 
+    created_at  | timestamp(0) without time zone |
 
-    updated_at  | timestamp(0) without time zone | 
+    updated_at  | timestamp(0) without time zone |
 
-    deleted_at  | timestamp(0) without time zone | 
+    deleted_at  | timestamp(0) without time zone |
 
     enabled     | boolean                        | not null default true
     """
@@ -48,6 +48,19 @@ class component(db.Model):
     updated_at = db.Column(db.String(26), default=now)
     deleted_at = db.Column(db.String(26))
 
+    def __init__(self, id, name, description, link, status, order, group_id, enabled, created_at, updated_at, deleted_at):
+        self.id = id
+        self.name = name
+        self.description = description
+        self.link = link
+        self.status = status
+        self.order = order
+        self.group_id = group_id
+        self.enabled = enabled
+        self.created_at = created_at
+        self.updated_at = updated_at
+        self.deleted_at = deleted_at
+
 class component_group(db.Model):
     """
     All data being storage on table "component_groups"
@@ -56,9 +69,9 @@ class component_group(db.Model):
 
     name       | character varying(255)         | not null
 
-    created_at | timestamp(0) without time zone | 
+    created_at | timestamp(0) without time zone |
 
-    updated_at | timestamp(0) without time zone | 
+    updated_at | timestamp(0) without time zone |
 
     order      | integer                        | not null default 0
 
@@ -74,6 +87,14 @@ class component_group(db.Model):
     order = db.Column(db.Integer, default=0, index=True)
     collapsed = db.Column(db.Integer, default=1)
 
+    def __init__(self, id, name, created_at, updated_at, order, collapsed):
+        self.id = id
+        self.name = name
+        self.created_at = created_at
+        self.updated_at = updated_at
+        self.order = order
+        self.collapsed = collapsed
+
 
 class component_tag(db.Model):
     """
@@ -82,7 +103,7 @@ class component_tag(db.Model):
     id           | integer | not null
 
     component_id | integer | not null
-    
+
     tag_id       | integer | not null
     """
 
@@ -91,3 +112,8 @@ class component_tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     component_id = db.Column(db.Integer, nullable=False, index=True)
     tag_id = db.Column(db.Integer, nullable=False, index=True)
+
+    def __init__(self, id, component_id, tag_id):
+        self.id = id
+        self.component_id = component_id
+        self.tag_id = tag_id

@@ -15,7 +15,7 @@ class cache(db.Model):
     key        | character varying(255) | not null
 
     value      | text                   | not null
-    
+
     expiration | integer                | not null
     """
 
@@ -26,6 +26,11 @@ class cache(db.Model):
     value = db.Column(db.Text, nullable=False)
     expiration = db.Column(db.Integer, nullable=False)
 
+    def __init__(self, id, key, value, expiration):
+        self.id = id
+        self.key = key
+        self.value = value
+        self.expiration = expiration
 
 class session(db.Model):
     """
@@ -33,11 +38,11 @@ class session(db.Model):
 
     id            | integer | not null
 
-    user_id       | integer                | 
+    user_id       | integer                |
 
-    ip_address    | character varying(45)  | 
+    ip_address    | character varying(45)  |
 
-    user_agent    | text                   | 
+    user_agent    | text                   |
 
     payload       | text                   | not null
 
@@ -52,3 +57,11 @@ class session(db.Model):
     user_agent = db.Column(db.Text)
     payload = db.Column(db.Text, nullable=False)
     last_activity = db.Column(db.String(26), nullable=False)
+
+    def __init__(self, id, user_id, ip_address, user_agent, payload, last_activity):
+        self.id = id
+        self.user_id = user_id
+        self.ip_address = ip_address
+        self.user_agent = user_agent
+        self.payload = payload
+        self.last_activity = last_activity

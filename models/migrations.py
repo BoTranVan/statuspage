@@ -23,3 +23,8 @@ class migration(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     migration = db.Column(db.String(255), nullable=False)
     batch = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, id, migration, batch):
+        self.id = id
+        self.migration = migration
+        self.batch = batch

@@ -25,9 +25,9 @@ class metric(db.Model):
 
     display_chart | boolean                        | not null default true
 
-    created_at    | timestamp(0) without time zone | 
+    created_at    | timestamp(0) without time zone |
 
-    updated_at    | timestamp(0) without time zone | 
+    updated_at    | timestamp(0) without time zone |
 
     places        | integer                        | not null default 2
 
@@ -36,6 +36,7 @@ class metric(db.Model):
     threshold     | integer                        | not null default 5
 
     order         | smallint                       | not null default '0'::smallint
+
     """
 
     __tablename__ = "metrics"
@@ -54,20 +55,35 @@ class metric(db.Model):
     threshold = db.Column(db.Integer, default=5)
     order = db.Column(db.Integer, default=0)
 
+    def __init__(self, id, name, suffix, description, default_value, calc_type, display_chart, created_at, updated_at, places, default_view, threshold, order):
+        self.id = id
+        self.name = name
+        self.suffix = suffix
+        self.description = description
+        self.default_value = default_value
+        self.calc_type = calc_type
+        self.display_chart = display_chart
+        self.created_at = created_at
+        self.updated_at = updated_at
+        self.places = places
+        self.default_view = default_view
+        self.threshold = threshold
+        self.order = order
+
 
 class metric_point(db.Model):
     """
     All data being storage on table "metric_points"
 
     id         | integer                        | not null
-    
+
     metric_id  | integer                        | not null
 
     value      | numeric(15,3)                  | not null
 
-    created_at | timestamp(0) without time zone | 
+    created_at | timestamp(0) without time zone |
 
-    updated_at | timestamp(0) without time zone | 
+    updated_at | timestamp(0) without time zone |
 
     counter    | integer                        | not null default 1
     """
@@ -80,3 +96,11 @@ class metric_point(db.Model):
     created_at = db.Column(db.String(26), default=now)
     updated_at = db.Column(db.String(26), default=now)
     counter = db.Column(db.Integer, default=1)
+
+    def __init__(self, id, metric_id, value, created_at, updated_at, counter):
+        self.id = id
+        self.metric_id = metric_id
+        self.value = value
+        self.created_at = created_at
+        self.updated_at = updated_at
+        self.counter = counter

@@ -6,6 +6,7 @@ try:
 
     from config import app, db
 
+
 except BaseException as e:
     raise e
 

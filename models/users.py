@@ -12,12 +12,12 @@ class user(db.Model):
     All data being storage on table "users"
 
     id                | integer                        | not null
-    
+
     username          | character varying(255)         | not null
 
     password          | character varying(255)         | not null
 
-    remember_token    | character varying(100)         | 
+    remember_token    | character varying(100)         |
 
     email             | character varying(255)         | not null
 
@@ -25,11 +25,11 @@ class user(db.Model):
 
     active            | boolean                        | not null default true
 
-    level             | smallint                       | not null default '2'::smallint
+    level             | smallint                       | not null
 
-    created_at        | timestamp(0) without time zone | 
+    created_at        | timestamp(0) without time zone |
 
-    updated_at        | timestamp(0) without time zone | 
+    updated_at        | timestamp(0) without time zone |
 
     google_2fa_secret | character varying(255)         |
     """
@@ -47,3 +47,16 @@ class user(db.Model):
     created_at = db.Column(db.String(26), default=now)
     updated_at = db.Column(db.String(26), default=now)
     google_2fa_secret = db.Column(db.String(255))
+
+    def __init__(self, id, username, password, remember_token, email, api_key, active, level, created_at, updated_at, google_2fa_secret):
+        self.id = id
+        self.username = username
+        self.password = password
+        self.remember_token = remember_token
+        self.email = email
+        self.api_key = api_key
+        self.active = active
+        self.level = level
+        self.created_at = created_at
+        self.updated_at = updated_at
+        self.google_2fa_secret = google_2fa_secret
