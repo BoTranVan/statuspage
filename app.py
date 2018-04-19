@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # @author: ministry
 
@@ -14,16 +14,14 @@ except BaseException as e:
 try:
     # app.run(host="0.0.0.0", port=8080, debug="True")
 
-    from models import models
+    from models import *
 
     db.create_all()
 
-    # obj = components.component(name='name')
-
     obj = components.component()
-    obj.update(id=1, name="name", enabled=True)
-    # db.session.add(obj)
-    # db.session.commit()
+    obj.delete_by_name(name='name')
+
+
 
 except BaseException as e:
     raise e

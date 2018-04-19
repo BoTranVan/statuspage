@@ -1,5 +1,9 @@
-"""
-Using a define component and reference it
+"""Using to create a component and reference it
+
+[description]
+
+Variables:
+    now {[string]} -- [About now datetime]
 """
 
 from config import db
@@ -8,30 +12,26 @@ now = dt.today().isoformat(' ')
 
 
 class component(db.Model):
-    """
-    All data being storage on table "components"
+    """Using a create a component
 
-    id          | integer                        |
+    [description]
 
-    name        | character varying(255)         |
+    Extends:
+        db.Model
 
-    description | text                           |
-
-    link        | text                           |
-
-    status      | integer                        | default 0
-
-    order       | integer                        | default 0
-
-    group_id    | integer                        | default 0
-
-    created_at  | timestamp(0) without time zone |
-
-    updated_at  | timestamp(0) without time zone |
-
-    deleted_at  | timestamp(0) without time zone |
-
-    enabled     | boolean                        |
+    Variables:
+        __tablename__ {str} -- [table name in database]
+        id {[int]} -- [the id of a component]
+        name {[string(255)]} -- [the name of a component]
+        description {[text]} -- [Description of the component]
+        link {[text]} -- [A hyperlink to the component]
+        status {[int]} -- [Status of the component; 1-4]
+        order {[int]} -- [Order of the component]
+        group_id {[int]} -- [The group id that the component is within]
+        enabled {[boolean]} -- [Whether the component is enabled]
+        created_at {[string]} -- [description]
+        updated_at {[string]} -- [description]
+        deleted_at {[string]} -- [description]
     """
 
     __tablename__ = "components"
@@ -47,7 +47,8 @@ class component(db.Model):
     updated_at = db.Column(db.String(26), default=now)
     deleted_at = db.Column(db.String(26))
 
-    # def __init__(self, name, description, link, status, order, group_id, enabled, created_at, updated_at, deleted_at):
+    # def __init__(self, name, description, link, status, order,
+    #               group_id, enabled, created_at, updated_at, deleted_at):
     #     self.id = id
     #     self.name = name
     #     self.description = description
@@ -60,49 +61,111 @@ class component(db.Model):
     #     self.updated_at = updated_at
     #     self.deleted_at = deleted_at
 
+    def get(self, id=None):
+        """Using get all component or get a single component.
+
+        [description]
+
+        Keyword Arguments:
+            id {[int]} -- [Component ID] (default: {None})
+
+        Returns:
+            [Information about component(s)] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            if id is None:
+                return self.query.all()
+            if id is not None and type(id) is int and id >= 0:
+                return self.query.get(id)
+        except Exception as e:
+            return e.__cause__.args[1]
+
     def insert(self):
-        db.session.add(self)
-        return db.session.commit()
+        """Create a new component.
+
+        [description]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            db.session.add(self)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
 
     def update(self, id, **arguments):
-        target = self.query.get(id)
-        # target.name = name
-        # target.status = status
-        # target.link = link
-        # target.order = order
-        # target.group_id = group_id
-        # target.enabled = enabled
-        # for i in arguments:
-            # target.i = arguments[i]
-            # print('target.'i)
-        target.updated_at = now
-        return db.session.commit()
+        """Update a component.
 
+        [description]
+
+        Arguments:
+            id {[int]} -- [The id of component]
+            **arguments {[dict]} -- [Maybe include: name, description,
+            link, status, order, group_id, enabled]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            target = self.query.get(id)
+            for i in arguments:
+                target.__setattr__(i, arguments[i])
+            target.updated_at = now
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def delete(self, id):
+        """Delete a component.
+
+        Actually, data forever stored in database.
+        Only difference is deleted_at have value
+
+        Arguments:
+            id {[int]} -- [The id of component]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            target = self.query.get(id)
+            target.deleted_at = now
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
 
 
 class component_group(db.Model):
+    """Using to create a component group
+
+    [description]
+
+    Extends:
+        db.Model
+
+    Variables:
+        __tablename__ {str} -- [table name in database]
+        id {[int]} -- [description]
+        name {[type]} -- [Name of the component group]
+        order {[type]} -- [Order of the component group]
+        collapsed {[type]} -- [Collapse the group? 0 = No. 1 = Yes.
+        2 = If a component is not Operational.]
+        created_at {[type]} -- [description]
+        updated_at {[type]} -- [description]
+        deleted_at {[type]} -- [description]
     """
-    All data being storage on table "component_groups"
-
-    id         | integer                        |
-
-    name       | character varying(255)         |
-
-    created_at | timestamp(0) without time zone |
-
-    updated_at | timestamp(0) without time zone |
-
-    order      | integer                        | default 0
-
-    collapsed  | integer                        | default 1
-    """
-
     __tablename__ = "component_groups"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.String(26), default=now)
     updated_at = db.Column(db.String(26), default=now)
+    deleted_at = db.Column(db.String(26))
     order = db.Column(db.Integer, default=0, index=True)
     collapsed = db.Column(db.Integer, default=1)
 
@@ -114,16 +177,97 @@ class component_group(db.Model):
     #     self.order = order
     #     self.collapsed = collapsed
 
+    def get(self, id=None):
+        """Using get all component groups or get a single component group.
+
+        [description]
+
+        Keyword Arguments:
+            id {[int]} -- [Component group ID] (default: {None})
+
+        Returns:
+            [Information about component(s)] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            if id is None:
+                return self.query.all()
+            if id is not None and type(id) is int and id >= 0:
+                return self.query.get(id)
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def insert(self):
+        """Create a new Component Group.
+
+        [description]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            db.session.add(self)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def update(self, id, **arguments):
+        """Update a Component Group.
+
+        [description]
+
+        Arguments:
+            id {[int]} -- [The id of component group]
+            **arguments {[dict]} -- [Maybe include: name, order, collapsed]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            target = self.query.get(id)
+            for i in arguments:
+                target.__setattr__(i, arguments[i])
+            target.updated_at = now
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def delete(self, id):
+        """Delete a Component Group.
+
+        Actually, data forever stored in database.
+        Only difference is deleted_at have value
+
+        Arguments:
+            id {[int]} -- [The id of component]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            target = self.query.get(id)
+            target.deleted_at = now
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
 
 class component_tag(db.Model):
-    """
-    All data being storage on table "component_tag"
+    """Using to create a component tag
 
-    id           | integer | not null
+    [description]
 
-    component_id | integer | not null
+    Extends:
+        db.Model
 
-    tag_id       | integer | not null
+    Variables:
+        __tablename__ {str} -- [table name in database]
+        id {[int]} -- [The id of component tag]
+        component_id {[int]} -- [The id of component]
+        tag_id {[int]} -- [The tag id]
     """
 
     __tablename__ = "component_tag"
@@ -136,3 +280,58 @@ class component_tag(db.Model):
     #     self.id = id
     #     self.component_id = component_id
     #     self.tag_id = tag_id
+
+    def get(self, id=None):
+        """Using get all component tags or get a single component tag.
+
+        [description]
+
+        Keyword Arguments:
+            id {[int]} -- [Component group ID] (default: {None})
+
+        Returns:
+            [Information about component(s)] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            if id is None:
+                return self.query.all()
+            if id is not None and type(id) is int and id >= 0:
+                return self.query.get(id)
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def insert(self):
+        """Create new component tag
+
+        [description]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            db.session.add(self)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def delete(self, id):
+        """Delete component tag
+
+        Actually, data forever stored in database.
+        Only difference is deleted_at have value
+
+        Arguments:
+            id {[int]} -- [The id of component]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            target = self.query.get(id)
+            db.session.delete(target)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]

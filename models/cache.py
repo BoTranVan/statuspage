@@ -1,5 +1,9 @@
-"""
-Using to create a session for users and references
+"""Using to create a session for users and references
+
+[description]
+
+Variables:
+    now {[string]} -- [About now datetime]
 """
 
 from config import db
@@ -8,16 +12,19 @@ now = dt.datetime.today().isoformat(' ')
 
 
 class cache(db.Model):
-    """
-    All data being storage on table "cache"
+    """Using to create a cache
 
-    id         | interger               |
+    [description]
 
-    key        | character varying(255) |
+    Extends:
+        db.Model
 
-    value      | text                   |
-
-    expiration | integer                |
+    Variables:
+        __tablename__ {str} -- [table name in database]
+        id {[int]} -- [The id of cache]
+        key {[string(255)]} -- [The key value of cache]
+        value {[text]} -- [The value of key in cache]
+        expiration {[int]} -- [The expiration]
     """
 
     __tablename__ = "cache"
@@ -34,20 +41,21 @@ class cache(db.Model):
 
 
 class session(db.Model):
-    """
-    All data being storage on table "sessions"
+    """Using to create a session in database
 
-    id            | integer |
+    [description]
 
-    user_id       | integer                |
+    Extends:
+        db.Model
 
-    ip_address    | character varying(45)  |
-
-    user_agent    | text                   |
-
-    payload       | text                   |
-
-    last_activity | character varying(255) |
+    Variables:
+        __tablename__ {str} -- [table name in database]
+        id {[int]} -- [The id of session]
+        user_id {[int]} -- [The user_id have this session]
+        ip_address {[sring(17)]} -- [The ip address of person have user_id]
+        user_agent {[text]} -- [The user agent of person]
+        payload {[text]} -- [The payload]
+        last_activity {[string]} -- [The about last activity of person]
     """
 
     __tablename__ = "sessions"
@@ -59,7 +67,8 @@ class session(db.Model):
     payload = db.Column(db.Text, nullable=False)
     last_activity = db.Column(db.String(26), nullable=False)
 
-    # def __init__(self, id, user_id, ip_address, user_agent, payload, last_activity):
+    # def __init__(self, id, user_id, ip_address,
+    #               user_agent, payload, last_activity):
     #     self.id = id
     #     self.user_id = user_id
     #     self.ip_address = ip_address
