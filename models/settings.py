@@ -30,9 +30,9 @@ class setting(db.Model):
     created_at = db.Column(db.String(26), default=now)
     updated_at = db.Column(db.String(26), default=now)
 
-    def __init__(self, id, name, value, created_at, updated_at):
-        self.id = id
-        self.name = name
-        self.value = value
-        self.created_at = created_at
-        self.updated_at = updated_at
+    # def __init__(self, id, name, value, created_at, updated_at):
+    #     self.id = id
+    #     self.name = name
+    #     self.value = value
+    #     self.created_at = created_at
+    #     self.updated_at = updated_at

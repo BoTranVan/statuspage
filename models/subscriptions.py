@@ -37,13 +37,13 @@ class subscriber(db.Model):
     # Igone error syntax, must be _global
     _global = db.Column(db.Boolean, default=True)
 
-    def __init__(self, id, email, verified_code, verified_at, created_at, updated_at):
-        self.id = id
-        self.email = email
-        self.verified_code = verified_code
-        self.verified_at = verified_at
-        self.created_at = created_at
-        self.updated_at = updated_at
+    # def __init__(self, id, email, verified_code, verified_at, created_at, updated_at):
+    #     self.id = id
+    #     self.email = email
+    #     self.verified_code = verified_code
+    #     self.verified_at = verified_at
+    #     self.created_at = created_at
+    #     self.updated_at = updated_at
 
 
 class subscription(db.Model):
@@ -66,9 +66,9 @@ class subscription(db.Model):
     created_at = db.Column(db.String(26), default=now)
     updated_at = db.Column(db.String(26), default=now)
 
-    def __init__(self, id, subscriber_id, component_id, created_at, updated_at):
-        self.id = id
-        self.subscriber_id = subscriber_id
-        self.component_id = component_id
-        self.created_at = created_at
-        self.updated_at = updated_at
+    # def __init__(self, id, subscriber_id, component_id, created_at, updated_at):
+    #     self.id = id
+    #     self.subscriber_id = subscriber_id
+    #     self.component_id = component_id
+    #     self.created_at = created_at
+    #     self.updated_at = updated_at

@@ -43,17 +43,17 @@ class incident(db.Model):
     scheduled_at = db.Column(db.String(26), default="null")
     visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self, id, component_id, name, status, message, created_at, updated_at, deleted_at, scheduled_at, visible):
-        self.id = id
-        self.component_id = component_id
-        self.name = name
-        self.status = status
-        self.message = message
-        self.created_at = created_at
-        self.updated_at = updated_at
-        self.deleted_at = deleted_at
-        self.scheduled_at = scheduled_at
-        self.visible = visible
+    # def __init__(self, id, component_id, name, status, message, created_at, updated_at, deleted_at, scheduled_at, visible):
+    #     self.id = id
+    #     self.component_id = component_id
+    #     self.name = name
+    #     self.status = status
+    #     self.message = message
+    #     self.created_at = created_at
+    #     self.updated_at = updated_at
+    #     self.deleted_at = deleted_at
+    #     self.scheduled_at = scheduled_at
+    #     self.visible = visible
 
 
 class incident_template(db.Model):
@@ -85,11 +85,11 @@ class incident_template(db.Model):
     updated_at = db.Column(db.String(26), default=now)
     deleted_at = db.Column(db.String(26))
 
-    def __init__(self, id, name, slug, template, created_at, updated_at, deleted_at):
-        self.id = id
-        self.name = name
-        self.slug = slug
-        self.template = template
-        self.created_at = created_at
-        self.updated_at = updated_at
-        self.deleted_at = deleted_at
+    # def __init__(self, id, name, slug, template, created_at, updated_at, deleted_at):
+    #     self.id = id
+    #     self.name = name
+    #     self.slug = slug
+    #     self.template = template
+    #     self.created_at = created_at
+    #     self.updated_at = updated_at
+    #     self.deleted_at = deleted_at

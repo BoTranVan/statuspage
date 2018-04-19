@@ -38,15 +38,15 @@ class job(db.Model):
     available_at = db.Column(db.String(26), nullable=False)
     created_at = db.Column(db.String(26), default=now)
 
-    def __init__(self, id, queue, payload, attempts, reserved, reserved_at, available_at, created_at):
-        self.id = id
-        self.queue = queue
-        self.payload = payload
-        self.attempts = attempts
-        self.reserved = reserved
-        self.reserved_at = reserved_at
-        self.available_at = available_at
-        self.created_at = created_at
+    # def __init__(self, id, queue, payload, attempts, reserved, reserved_at, available_at, created_at):
+    #     self.id = id
+    #     self.queue = queue
+    #     self.payload = payload
+    #     self.attempts = attempts
+    #     self.reserved = reserved
+    #     self.reserved_at = reserved_at
+    #     self.available_at = available_at
+    #     self.created_at = created_at
 
 
 class failed_job(db.Model):
@@ -72,9 +72,9 @@ class failed_job(db.Model):
     payload = db.Column(db.Text, nullable=False)
     failed_at = db.Column(db.String(26), nullable=False)
 
-    def __init__(self, id, connection, queue, payload, failed_at):
-        self.id = id
-        self.connection = connection
-        self.queue = queue
-        self.payload = payload
-        self.failed_at = failed_at
+    # def __init__(self, id, connection, queue, payload, failed_at):
+    #     self.id = id
+    #     self.connection = connection
+    #     self.queue = queue
+    #     self.payload = payload
+    #     self.failed_at = failed_at

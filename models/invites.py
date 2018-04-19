@@ -32,10 +32,10 @@ class invite(db.Model):
     created_at = db.Column(db.String(26), default=now)
     updated_at = db.Column(db.String(26), default=now)
 
-    def __init__(self, id, code, email, claimed_at, created_at, updated_at):
-        self.id = id
-        self.code = code
-        self.email = email
-        self.claimed_at = claimed_at
-        self.created_at = created_at
-        self.updated_at = updated_at
+    # def __init__(self, id, code, email, claimed_at, created_at, updated_at):
+    #     self.id = id
+    #     self.code = code
+    #     self.email = email
+    #     self.claimed_at = claimed_at
+    #     self.created_at = created_at
+    #     self.updated_at = updated_at

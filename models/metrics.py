@@ -55,20 +55,20 @@ class metric(db.Model):
     threshold = db.Column(db.Integer, default=5)
     order = db.Column(db.Integer, default=0)
 
-    def __init__(self, id, name, suffix, description, default_value, calc_type, display_chart, created_at, updated_at, places, default_view, threshold, order):
-        self.id = id
-        self.name = name
-        self.suffix = suffix
-        self.description = description
-        self.default_value = default_value
-        self.calc_type = calc_type
-        self.display_chart = display_chart
-        self.created_at = created_at
-        self.updated_at = updated_at
-        self.places = places
-        self.default_view = default_view
-        self.threshold = threshold
-        self.order = order
+    # def __init__(self, id, name, suffix, description, default_value, calc_type, display_chart, created_at, updated_at, places, default_view, threshold, order):
+    #     self.id = id
+    #     self.name = name
+    #     self.suffix = suffix
+    #     self.description = description
+    #     self.default_value = default_value
+    #     self.calc_type = calc_type
+    #     self.display_chart = display_chart
+    #     self.created_at = created_at
+    #     self.updated_at = updated_at
+    #     self.places = places
+    #     self.default_view = default_view
+    #     self.threshold = threshold
+    #     self.order = order
 
 
 class metric_point(db.Model):
@@ -97,10 +97,10 @@ class metric_point(db.Model):
     updated_at = db.Column(db.String(26), default=now)
     counter = db.Column(db.Integer, default=1)
 
-    def __init__(self, id, metric_id, value, created_at, updated_at, counter):
-        self.id = id
-        self.metric_id = metric_id
-        self.value = value
-        self.created_at = created_at
-        self.updated_at = updated_at
-        self.counter = counter
+    # def __init__(self, id, metric_id, value, created_at, updated_at, counter):
+    #     self.id = id
+    #     self.metric_id = metric_id
+    #     self.value = value
+    #     self.created_at = created_at
+    #     self.updated_at = updated_at
+    #     self.counter = counter

@@ -15,12 +15,13 @@ except BaseException as e:
 try:
     # app.run(host="0.0.0.0", port=8080, debug="True")
 
-    # from models import *
+    from models import *
 
-    # db.create_all()
+    db.create_all()
 
-    # obj = cache.cache(key="This is key", value="This is value", expiration=9)
+    obj = components.component(name='name')
 
+    obj.insert()
     # db.session.add(obj)
     # db.session.commit()
 
