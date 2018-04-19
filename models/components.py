@@ -64,6 +64,20 @@ class component(db.Model):
         db.session.add(self)
         return db.session.commit()
 
+    def update(self, id, **arguments):
+        target = self.query.get(id)
+        # target.name = name
+        # target.status = status
+        # target.link = link
+        # target.order = order
+        # target.group_id = group_id
+        # target.enabled = enabled
+        # for i in arguments:
+            # target.i = arguments[i]
+            # print('target.'i)
+        target.updated_at = now
+        return db.session.commit()
+
 
 
 class component_group(db.Model):
