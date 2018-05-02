@@ -1,34 +1,36 @@
-"""
-Using define a incidents
-"""
+"""Using to create a incident and reference it
 
+[description]
+
+Variables:
+    now {[string]} -- [About now datetime]
+"""
 from config import db
 from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
+
 class incident(db.Model):
-    """
-    All data being storage on table "incidents"
+    """Using to create a incident
 
-    id           | integer                        | not null
+    [description]
 
-    component_id | integer                        | not null default 0
+    Extends:
+        db.Model
 
-    name         | character varying(255)         | not null
-
-    status       | integer                        | not null
-
-    message      | text                           | not null
-
-    created_at   | timestamp(0) without time zone |
-
-    updated_at   | timestamp(0) without time zone |
-
-    deleted_at   | timestamp(0) without time zone |
-
-    scheduled_at | timestamp(0) without time zone |
-
-    visible      | boolean                        | not null default true
+    Variables:
+        __tablename__ {str} -- [table name in database]
+        id {[int]} -- [The id]
+        component_id {[int]} -- [The id of component that this incident was in
+        cluded]
+        name {[type]} -- [description]
+        status {[type]} -- [description]
+        message {[type]} -- [description]
+        created_at {[type]} -- [description]
+        updated_at {[type]} -- [description]
+        deleted_at {[type]} -- [description]
+        scheduled_at {[type]} -- [description]
+        visible {[type]} -- [description]
     """
     __tablename__ = "incidents"
 
@@ -38,12 +40,13 @@ class incident(db.Model):
     status = db.Column(db.Integer, nullable=False, index=True)
     message = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.String(26), default=now)
-    update_at = db.Column(db.String(26), default=now)
-    delete_at = db.Column(db.String(26), default="null")
-    scheduled_at = db.Column(db.String(26), default="null")
+    updated_at = db.Column(db.String(26), default=now)
+    deleted_at = db.Column(db.String(26))
+    scheduled_at = db.Column(db.String(26))
     visible = db.Column(db.Boolean, default=True)
 
-    # def __init__(self, id, component_id, name, status, message, created_at, updated_at, deleted_at, scheduled_at, visible):
+    # def __init__(self, id, component_id, name, status, message, created_at,
+    #               updated_at, deleted_at, scheduled_at, visible):
     #     self.id = id
     #     self.component_id = component_id
     #     self.name = name
@@ -55,24 +58,103 @@ class incident(db.Model):
     #     self.scheduled_at = scheduled_at
     #     self.visible = visible
 
+    def get(self, id=None):
+        """Using get all incidents or get a single incident.
+
+        [description]
+
+        Keyword Arguments:
+            id {[int]} -- [Incident ID] (default: {None})
+
+        Returns:
+            [Information about incident(s)] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            if id is None:
+                return self.query.all()
+            if id is not None and type(id) is int and id >= 0:
+                return self.query.get(id)
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def insert(self):
+        """Create a new Incident.
+
+        [description]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            db.session.add(self)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def update(self, id, **arguments):
+        """Update a Incident
+
+        [description]
+
+        Arguments:
+            id {[int]} -- [The id of component]
+            **arguments {[dict]} -- [Maybe include: name, message,
+            status, visible, component_id, component_status, notify]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+
+        """
+        try:
+            target = self.query.get(id)
+            for i in arguments:
+                target.__setattr__(i, arguments[i])
+            target.updated_at = now
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def delete(self, id):
+        """Delete a incident.
+
+        Actually, data forever stored in database.
+        Only difference is deleted_at have value
+
+        Arguments:
+            id {[int]} -- [The id of component]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            target = self.query.get(id)
+            target.deleted_at = now
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
 
 class incident_template(db.Model):
-    """
-    All data being storage on tables "incident_templates"
+    """Using to create a incident template
 
-    id         | integer                        | not null
+    [description]
 
-    name       | character varying(255)         | not null
+    Extends:
+        db.Model
 
-    slug       | character varying(255)         | not null
-
-    template   | text                           | not null
-
-    created_at | timestamp(0) without time zone |
-
-    updated_at | timestamp(0) without time zone |
-
-    deleted_at | timestamp(0) without time zone |
+    Variables:
+        __tablename__ {str} -- [table name in database]
+        id {[int]} -- [The id]
+        name {[str(255)]} -- [The name of incident template]
+        slug {[str(255)]} -- [Content of tag in incidents]
+        template {[text]} -- [description]
+        created_at {[string]} -- [description]
+        updated_at {[string]} -- [description]
+        deleted_at {[string]} -- [description]
     """
 
     __tablename__ = "incident_templates"

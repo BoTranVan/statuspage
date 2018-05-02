@@ -6,6 +6,7 @@ from config import db
 from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
+
 class job(db.Model):
     """
     All data being storage on table "jobs"

@@ -8,17 +8,21 @@ now = dt.today().isoformat(' ')
 
 
 class migration(db.Model):
-    """
-    All data being storage on table "migrations"
+    """Save all activity
 
-    id        | integer                | not null
-    migration | character varying(255) | not null
+    [description]
 
-    batch     | integer                | not null
+    Extends:
+        db.Model
+
+    Variables:
+        __tablename__ {str} -- [description]
+        id {[type]} -- [description]
+        migration {[type]} -- [description]
+        batch {[type]} -- [description]
     """
 
     __tablename__ = "migrations"
-
 
     id = db.Column(db.Integer, primary_key=True)
     migration = db.Column(db.String(255), nullable=False)

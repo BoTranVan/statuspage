@@ -8,35 +8,28 @@ now = dt.today().isoformat(' ')
 
 
 class metric(db.Model):
-    """
-    All data being storage on table "metrics"
+    """[summary]
 
-    id            | integer                        | not null
+    [description]
 
-    name          | character varying(255)         | not null
+    Extends:
+        db.Model
 
-    suffix        | character varying(255)         | not null
-
-    description   | text                           | not null
-
-    default_value | numeric(10,3)                  | not null
-
-    calc_type     | smallint                       | not null
-
-    display_chart | boolean                        | not null default true
-
-    created_at    | timestamp(0) without time zone |
-
-    updated_at    | timestamp(0) without time zone |
-
-    places        | integer                        | not null default 2
-
-    default_view  | Boolean                       | not null default True
-
-    threshold     | integer                        | not null default 5
-
-    order         | smallint                       | not null default '0'::smallint
-
+    Variables:
+        __tablename__ {str} -- [description]
+        id {[type]} -- [description]
+        name {[type]} -- [description]
+        suffix {[type]} -- [description]
+        description {[type]} -- [description]
+        default_value {[type]} -- [description]
+        calc_type {[type]} -- [description]
+        display_chart {[type]} -- [description]
+        created_at {[type]} -- [description]
+        updated_at {[type]} -- [description]
+        places {[type]} -- [description]
+        default_view {[type]} -- [description]
+        threshold {[type]} -- [description]
+        order {[type]} -- [description]
     """
 
     __tablename__ = "metrics"
@@ -72,20 +65,21 @@ class metric(db.Model):
 
 
 class metric_point(db.Model):
-    """
-    All data being storage on table "metric_points"
+    """[summary]
 
-    id         | integer                        | not null
+    [description]
 
-    metric_id  | integer                        | not null
+    Extends:
+        db.Model
 
-    value      | numeric(15,3)                  | not null
-
-    created_at | timestamp(0) without time zone |
-
-    updated_at | timestamp(0) without time zone |
-
-    counter    | integer                        | not null default 1
+    Variables:
+        __tablename__ {str} -- [description]
+        id {[type]} -- [description]
+        metric_id {[type]} -- [description]
+        value {[type]} -- [description]
+        created_at {[type]} -- [description]
+        updated_at {[type]} -- [description]
+        counter {[type]} -- [description]
     """
 
     __tablename__ = "metric_points"

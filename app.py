@@ -18,8 +18,8 @@ try:
 
     db.create_all()
 
-    obj = components.component()
-    obj.delete_by_name(name='name')
+    obj = incidents.incident(name='name', message='message', status=1)
+    print(obj.insert())
 
 
 

@@ -8,30 +8,26 @@ now = dt.today().isoformat(' ')
 
 
 class user(db.Model):
-    """
-    All data being storage on table "users"
+    """All data being storage on table "users"
 
-    id                | integer                        | not null
+    [description]
 
-    username          | character varying(255)         | not null
+    Extends:
+        db.Model
 
-    password          | character varying(255)         | not null
-
-    remember_token    | character varying(100)         |
-
-    email             | character varying(255)         | not null
-
-    api_key           | character varying(255)         | not null
-
-    active            | boolean                        | not null default true
-
-    level             | smallint                       | not null
-
-    created_at        | timestamp(0) without time zone |
-
-    updated_at        | timestamp(0) without time zone |
-
-    google_2fa_secret | character varying(255)         |
+    Variables:
+        __tablename__ {str} -- [description]
+        id {[type]} -- [description]
+        username {[type]} -- [description]
+        password {[type]} -- [description]
+        remember_token {[type]} -- [description]
+        email {[type]} -- [description]
+        api_key {[type]} -- [description]
+        active {[type]} -- [description]
+        level {[type]} -- [description]
+        created_at {[type]} -- [description]
+        updated_at {[type]} -- [description]
+        google_2fa_secret {[type]} -- [description]
     """
 
     __tablename__ = "users"
