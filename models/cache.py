@@ -39,6 +39,65 @@ class cache(db.Model):
     #     self.value = value
     #     self.expiration = expiration
 
+    def get(self, id=None):
+        """[summary]
+
+        [description]
+
+        Keyword Arguments:
+            id {[type]} -- [description] (default: {None})
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            if id is None:
+                return self.query.all()
+            if id is not None and type(id) is int and id >= 0:
+                return self.query.get(id)
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def insert(self, key, value, expiration):
+        """[summary]
+
+        [description]
+
+        Arguments:
+            key {[type]} -- [description]
+            value {[type]} -- [description]
+            expiration {[type]} -- [description]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            db.session.add(self)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def delete(self, id):
+        """[summary]
+
+        [description]
+
+        Arguments:
+            id {[type]} -- [description]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            target = self.query.get(id)
+            db.session.delete(target)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
 
 class session(db.Model):
     """Using to create a session in database
@@ -75,3 +134,57 @@ class session(db.Model):
     #     self.user_agent = user_agent
     #     self.payload = payload
     #     self.last_activity = last_activity
+
+    def get(self, id):
+        """[summary]
+
+        [description]
+
+        Arguments:
+            id {[type]} -- [description]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            if id is None:
+                return self.query.all()
+            if id is not None and type(id) is int and id >= 0:
+                return self.query.get(id)
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def insert(self):
+        """[summary]
+
+        [description]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            db.session.add(self)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def delete(self, id):
+        """[summary]
+
+        [description]
+
+        Arguments:
+            id {[type]} -- [description]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+        """
+        try:
+            target = self.query.get(id)
+            db.session.delete(target)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
