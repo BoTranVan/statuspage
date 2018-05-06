@@ -15,7 +15,7 @@ try:
 
     db.create_all()
 
-    obj = incidents.incident(id=2).update(name='2th name of incident')
+    obj = incidents.incident().get()
     print(obj)
 
 

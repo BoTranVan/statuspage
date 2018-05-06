@@ -61,7 +61,7 @@ class component(db.Model):
     #     self.updated_at = updated_at
     #     self.deleted_at = deleted_at
 
-    def get(self, id=None):
+    def get(self):
         """Using get all component or get a single component.
 
         [description]
@@ -74,10 +74,10 @@ class component(db.Model):
             [Message] -- [When failed]
         """
         try:
-            if id is None:
+            if self.id is None:
                 return self.query.all()
-            if id is not None and type(id) is int and id >= 0:
-                return self.query.get(id)
+            if self.id is not None and type(self.id) is int and self.id >= 0:
+                return self.query.get(self.id)
         except Exception as e:
             return e.__cause__.args[1]
 
@@ -96,7 +96,7 @@ class component(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
-    def update(self, id, **arguments):
+    def update(self, **arguments):
         """Update a component.
 
         [description]
@@ -111,7 +111,7 @@ class component(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             for i in arguments:
                 target.__setattr__(i, arguments[i])
             target.updated_at = now
@@ -119,7 +119,7 @@ class component(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
-    def delete(self, id):
+    def delete(self):
         """Delete a component.
 
         Actually, data forever stored in database.
@@ -133,7 +133,7 @@ class component(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             target.deleted_at = now
             return db.session.commit()
         except Exception as e:
@@ -177,7 +177,7 @@ class component_group(db.Model):
     #     self.order = order
     #     self.collapsed = collapsed
 
-    def get(self, id=None):
+    def get(self):
         """Using get all component groups or get a single component group.
 
         [description]
@@ -190,10 +190,10 @@ class component_group(db.Model):
             [Message] -- [When failed]
         """
         try:
-            if id is None:
+            if self.id is None:
                 return self.query.all()
-            if id is not None and type(id) is int and id >= 0:
-                return self.query.get(id)
+            if self.id is not None and type(self.id) is int and self.id >= 0:
+                return self.query.get(self.id)
         except Exception as e:
             return e.__cause__.args[1]
 
@@ -212,7 +212,7 @@ class component_group(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
-    def update(self, id, **arguments):
+    def update(self, **arguments):
         """Update a Component Group.
 
         [description]
@@ -226,7 +226,7 @@ class component_group(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             for i in arguments:
                 target.__setattr__(i, arguments[i])
             target.updated_at = now
@@ -234,7 +234,7 @@ class component_group(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
-    def delete(self, id):
+    def delete(self):
         """Delete a Component Group.
 
         Actually, data forever stored in database.
@@ -248,7 +248,7 @@ class component_group(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             target.deleted_at = now
             return db.session.commit()
         except Exception as e:
@@ -281,7 +281,7 @@ class component_tag(db.Model):
     #     self.component_id = component_id
     #     self.tag_id = tag_id
 
-    def get(self, id=None):
+    def get(self):
         """Using get all component tags or get a single component tag.
 
         [description]
@@ -294,10 +294,10 @@ class component_tag(db.Model):
             [Message] -- [When failed]
         """
         try:
-            if id is None:
+            if self.id is None:
                 return self.query.all()
-            if id is not None and type(id) is int and id >= 0:
-                return self.query.get(id)
+            if self.id is not None and type(self.id) is int and self.id >= 0:
+                return self.query.get(self.id)
         except Exception as e:
             return e.__cause__.args[1]
 
@@ -316,7 +316,7 @@ class component_tag(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
-    def delete(self, id):
+    def delete(self):
         """Delete component tag
 
         Actually, data forever stored in database.
@@ -330,7 +330,7 @@ class component_tag(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             db.session.delete(target)
             return db.session.commit()
         except Exception as e:

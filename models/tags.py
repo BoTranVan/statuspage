@@ -36,7 +36,7 @@ class tag(db.Model):
     #     self.created_at = created_at
     #     self.updated_at = updated_at
 
-    def get(self, id):
+    def get(self):
         """[summary]
 
         [description]
@@ -49,10 +49,10 @@ class tag(db.Model):
             [Message] -- [When failed]
         """
         try:
-            if id is None:
+            if self.id is None:
                 return self.query.all()
-            if id is not None and type(id) is int and id >= 0:
-                return self.query.get(id)
+            if self.id is not None and type(self.id) is int and self.id >= 0:
+                return self.query.get(self.id)
         except Exception as e:
             return e.__cause__.args[1]
 
@@ -81,7 +81,7 @@ class tag(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             target.deleted_at = now
             return db.session.commit()
         except Exception as e:

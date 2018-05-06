@@ -58,7 +58,7 @@ class incident(db.Model):
     #     self.scheduled_at = scheduled_at
     #     self.visible = visible
 
-    def get(self, id=None):
+    def get(self):
         """Using get all incidents or get a single incident.
 
         [description]
@@ -71,10 +71,10 @@ class incident(db.Model):
             [Message] -- [When failed]
         """
         try:
-            if id is None:
+            if self.id is None:
                 return self.query.all()
-            if id is not None and type(id) is int and id >= 0:
-                return self.query.get(id)
+            if self.id is not None and type(self.id) is int and self.id >= 0:
+                return self.query.get(self.id)
         except Exception as e:
             return e.__cause__.args[1]
 

@@ -39,7 +39,7 @@ class cache(db.Model):
     #     self.value = value
     #     self.expiration = expiration
 
-    def get(self, id=None):
+    def get(self):
         """[summary]
 
         [description]
@@ -52,14 +52,14 @@ class cache(db.Model):
             [Message] -- [When failed]
         """
         try:
-            if id is None:
+            if self.id is None:
                 return self.query.all()
-            if id is not None and type(id) is int and id >= 0:
-                return self.query.get(id)
+            if self.id is not None and type(self.id) is int and self.id >= 0:
+                return self.query.get(self.id)
         except Exception as e:
             return e.__cause__.args[1]
 
-    def insert(self, key, value, expiration):
+    def insert(self):
         """[summary]
 
         [description]
@@ -79,7 +79,7 @@ class cache(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
-    def delete(self, id):
+    def delete(self):
         """[summary]
 
         [description]
@@ -92,7 +92,7 @@ class cache(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             db.session.delete(target)
             return db.session.commit()
         except Exception as e:
@@ -135,7 +135,7 @@ class session(db.Model):
     #     self.payload = payload
     #     self.last_activity = last_activity
 
-    def get(self, id):
+    def get(self):
         """[summary]
 
         [description]
@@ -148,10 +148,10 @@ class session(db.Model):
             [Message] -- [When failed]
         """
         try:
-            if id is None:
+            if self.id is None:
                 return self.query.all()
-            if id is not None and type(id) is int and id >= 0:
-                return self.query.get(id)
+            if self.id is not None and type(self.id) is int and self.id >= 0:
+                return self.query.get(self.id)
         except Exception as e:
             return e.__cause__.args[1]
 
@@ -170,7 +170,7 @@ class session(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
-    def delete(self, id):
+    def delete(self):
         """[summary]
 
         [description]
@@ -183,8 +183,31 @@ class session(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             db.session.delete(target)
+            return db.session.commit()
+        except Exception as e:
+            return e.__cause__.args[1]
+
+    def update(self, **arguments):
+        """Update a session
+
+        [description]
+
+        Arguments:
+            id {[int]} -- [The id of component]
+            **arguments {[dict]} -- [Maybe include: user_id, ip_address,
+                                    user_agent, payload, last_activity]
+
+        Returns:
+            [None] -- [When successed]
+            [Message] -- [When failed]
+
+        """
+        try:
+            target = self.query.get(self.id)
+            for i in arguments:
+                target.__setattr__(i, arguments[i])
             return db.session.commit()
         except Exception as e:
             return e.__cause__.args[1]
