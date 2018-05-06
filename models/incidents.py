@@ -35,8 +35,8 @@ class incident(db.Model):
     __tablename__ = "incidents"
 
     id = db.Column(db.Integer, primary_key=True)
-    component_id = db.Column(db.Integer, default=0, index=True)
-    name = db.Column(db.String(255), unique=True, nullable=False)
+    component_id = db.Column(db.Integer, db.ForeignKey('components.id'), index=True)
+    name = db.Column(db.String(255), nullable=False)
     status = db.Column(db.Integer, nullable=False, index=True)
     message = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.String(26), default=now)
@@ -93,7 +93,7 @@ class incident(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
-    def update(self, id, **arguments):
+    def update(self, **arguments):
         """Update a Incident
 
         [description]
@@ -109,7 +109,7 @@ class incident(db.Model):
 
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             for i in arguments:
                 target.__setattr__(i, arguments[i])
             target.updated_at = now
@@ -117,7 +117,7 @@ class incident(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
-    def delete(self, id):
+    def delete(self):
         """Delete a incident.
 
         Actually, data forever stored in database.
@@ -131,7 +131,7 @@ class incident(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(id)
+            target = self.query.get(self.id)
             target.deleted_at = now
             return db.session.commit()
         except Exception as e:

@@ -9,18 +9,14 @@ try:
 except BaseException as e:
     raise e
 
-
-
 try:
     # app.run(host="0.0.0.0", port=8080, debug="True")
-
     from models import *
 
     db.create_all()
 
-    obj = incidents.incident(name='name', message='message', status=1)
-    print(obj.insert())
-
+    obj = incidents.incident(id=2).update(name='2th name of incident')
+    print(obj)
 
 
 except BaseException as e:
