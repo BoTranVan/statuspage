@@ -1,5 +1,4 @@
-from flask import jsonify
-from config import app
+from config import app, jsonify
 
 
 @app.route('/api/ping')

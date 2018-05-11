@@ -11,7 +11,7 @@ import datetime as dt
 now = dt.datetime.today().isoformat(' ')
 
 
-class cache(db.Model):
+class Cache(db.Model):
     """Using to create a cache
 
     [description]
@@ -99,7 +99,7 @@ class cache(db.Model):
             return e.__cause__.args[1]
 
 
-class session(db.Model):
+class Session(db.Model):
     """Using to create a session in database
 
     [description]

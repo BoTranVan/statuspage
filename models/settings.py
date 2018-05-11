@@ -7,7 +7,7 @@ from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
 
-class setting(db.Model):
+class Setting(db.Model):
     """
     All data being storage on table "settings"
 

@@ -7,7 +7,7 @@ from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
 
-class user(db.Model):
+class User(db.Model):
     """All data being storage on table "users"
 
     [description]

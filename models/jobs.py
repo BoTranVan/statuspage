@@ -7,7 +7,7 @@ from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
 
-class job(db.Model):
+class Job(db.Model):
     """
     All data being storage on table "jobs"
 
@@ -50,7 +50,7 @@ class job(db.Model):
     #     self.created_at = created_at
 
 
-class failed_job(db.Model):
+class FailedJob(db.Model):
     """
     All data being storage on table "failed_jobs"
 

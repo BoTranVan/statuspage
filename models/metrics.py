@@ -7,7 +7,7 @@ from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
 
-class metric(db.Model):
+class Metric(db.Model):
     """[summary]
 
     [description]
@@ -64,7 +64,7 @@ class metric(db.Model):
     #     self.order = order
 
 
-class metric_point(db.Model):
+class MetricPoint(db.Model):
     """[summary]
 
     [description]

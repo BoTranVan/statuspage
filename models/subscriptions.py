@@ -7,7 +7,7 @@ from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
 
-class subscriber(db.Model):
+class Subscriber(db.Model):
     """
     All data being storage on table "subscribers"
 
@@ -46,7 +46,7 @@ class subscriber(db.Model):
     #     self.updated_at = updated_at
 
 
-class subscription(db.Model):
+class Subscription(db.Model):
     """
     All data being to storage on table "subscriptions"
 

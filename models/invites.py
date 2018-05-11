@@ -7,7 +7,7 @@ from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
 
-class invite(db.Model):
+class Invite(db.Model):
     """
     All data being storage on table "invites"
 

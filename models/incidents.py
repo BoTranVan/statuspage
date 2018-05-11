@@ -10,7 +10,7 @@ from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
 
-class incident(db.Model):
+class Incident(db.Model):
     """Using to create a incident
 
     [description]
@@ -138,7 +138,7 @@ class incident(db.Model):
             return e.__cause__.args[1]
 
 
-class incident_template(db.Model):
+class IncidentTemplate(db.Model):
     """Using to create a incident template
 
     [description]

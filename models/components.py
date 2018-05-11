@@ -11,7 +11,7 @@ from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
 
-class component(db.Model):
+class Component(db.Model):
     """Using a create a component
 
     [description]
@@ -140,7 +140,7 @@ class component(db.Model):
             return e.__cause__.args[1]
 
 
-class component_group(db.Model):
+class ComponentGroup(db.Model):
     """Using to create a component group
 
     [description]
@@ -255,7 +255,7 @@ class component_group(db.Model):
             return e.__cause__.args[1]
 
 
-class component_tag(db.Model):
+class ComponentTag(db.Model):
     """Using to create a component tag
 
     [description]

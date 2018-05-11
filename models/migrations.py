@@ -7,7 +7,7 @@ from datetime import datetime as dt
 now = dt.today().isoformat(' ')
 
 
-class migration(db.Model):
+class Migration(db.Model):
     """Save all activity
 
     [description]
