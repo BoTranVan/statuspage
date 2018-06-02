@@ -78,6 +78,67 @@ class Incident(db.Model):
         except Exception as e:
             return e.__cause__.args[1]
 
+    def get_json(self, lim=None, index=None):
+        """Return a json response
+
+        [description]
+        """
+        try:
+            if self.id is None:
+                res, data = {}, []
+                for i in self.query.all():
+                    incident = {
+                            "id": i.id,
+                            "component_id": i.component_id,
+                            "name": i.name,
+                            "status": i.status,
+                            "visible": i.visible,
+                            "message": i.message,
+                            "scheduled_at": i.scheduled_at,
+                            "created_at": i.created_at,
+                            "updated_at": i.updated_at,
+                            "deleted_at": i.deleted_at
+                        }
+                    data.append(incident)
+                res['total_count'] = len(data)
+                if lim is not None:
+                    if index is not None:
+                        res['data'] = data[int(index): int(lim) + int(index)]
+                    else:
+                        res['data'] = data[:int(lim)]
+                    res['record_count'] = len(res['data'])
+                if lim is None:
+                    if index is not None:
+                        res['data'] = data[int(index):]
+                    else:
+                        res['data'] = data
+                    res['record_count'] = len(res['data'])
+                return res
+            if self.id is not None and type(self.id) is int and self.id >= 0:
+                res = {
+                    "data": {
+                        "id": self.get().id,
+                        "component_id": self.get().component_id,
+                        "name": self.get().name,
+                        "status": self.get().status,
+                        "visible": self.get().visible,
+                        "message": self.get().message,
+                        "scheduled_at": self.get().scheduled_at,
+                        "created_at": self.get().created_at,
+                        "updated_at": self.get().updated_at,
+                        "deleted_at": self.get().deleted_at
+                    }
+                }
+                return res
+        except Exception as e:
+            print("ERROR: ", e)
+            res = {
+                    "error": {
+                        "message": "Not found object"
+                    }
+                }
+            return res
+
     def insert(self):
         """Create a new Incident.
 
@@ -131,9 +192,14 @@ class Incident(db.Model):
             [Message] -- [When failed]
         """
         try:
-            target = self.query.get(self.id)
-            target.deleted_at = now
-            return db.session.commit()
+            if self.id is None:
+                for i in self.query.all():
+                    i.delete_at = now
+                return db.session.commit()
+            if self.id is not None and type(self.id) is int and self.id >= 0:
+                target = self.query.get(self.id)
+                target.deleted_at = now
+                return db.session.commit()
         except Exception as e:
             return e.__cause__.args[1]
 

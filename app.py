@@ -13,6 +13,5 @@ try:
     from routes.api import *
     db.create_all()
 
-
 except BaseException as e:
     raise e
