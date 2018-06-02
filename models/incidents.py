@@ -73,21 +73,22 @@ class Incident(db.Model):
         try:
             if self.id is None:
                 return self.query.all()
-            if self.id is not None and type(self.id) is int and self.id >= 0:
+            if type(self.id) is int and self.id >= 0:
                 return self.query.get(self.id)
         except Exception as e:
             return e.__cause__.args[1]
 
-    def get_json(self, lim=None, index=None):
+    def get_json(self, lim=None, index=None, deleted=False):
         """Return a json response
 
         [description]
         """
         try:
-            if self.id is None:
-                res, data = {}, []
-                for i in self.query.all():
-                    incident = {
+            if bool(deleted) is True:
+                if self.id is None:
+                    res, data = {}, []
+                    for i in self.query.all():
+                        incident = {
                             "id": i.id,
                             "component_id": i.component_id,
                             "name": i.name,
@@ -99,44 +100,100 @@ class Incident(db.Model):
                             "updated_at": i.updated_at,
                             "deleted_at": i.deleted_at
                         }
-                    data.append(incident)
-                res['total_count'] = len(data)
-                if lim is not None:
-                    if index is not None:
-                        res['data'] = data[int(index): int(lim) + int(index)]
-                    else:
-                        res['data'] = data[:int(lim)]
-                    res['record_count'] = len(res['data'])
-                if lim is None:
-                    if index is not None:
-                        res['data'] = data[int(index):]
-                    else:
-                        res['data'] = data
-                    res['record_count'] = len(res['data'])
-                return res
-            if self.id is not None and type(self.id) is int and self.id >= 0:
-                res = {
-                    "data": {
-                        "id": self.get().id,
-                        "component_id": self.get().component_id,
-                        "name": self.get().name,
-                        "status": self.get().status,
-                        "visible": self.get().visible,
-                        "message": self.get().message,
-                        "scheduled_at": self.get().scheduled_at,
-                        "created_at": self.get().created_at,
-                        "updated_at": self.get().updated_at,
-                        "deleted_at": self.get().deleted_at
+                        data.append(incident)
+                    res['total_count'] = len(data)
+                    if lim is not None:
+                        if index is not None:
+                            res['data'] = data[int(index): int(lim) + int(index)]
+                        else:
+                            res['data'] = data[:int(lim)]
+                        res['record_count'] = len(res['data'])
+                    if lim is None:
+                        if index is not None:
+                            res['data'] = data[int(index):]
+                        else:
+                            res['data'] = data
+                        res['record_count'] = len(res['data'])
+                    return res
+                if type(self.id) is int and self.id >= 0:
+                    res = {
+                        "data": {
+                            "id": self.get().id,
+                            "component_id": self.get().component_id,
+                            "name": self.get().name,
+                            "status": self.get().status,
+                            "visible": self.get().visible,
+                            "message": self.get().message,
+                            "scheduled_at": self.get().scheduled_at,
+                            "created_at": self.get().created_at,
+                            "updated_at": self.get().updated_at,
+                            "deleted_at": self.get().deleted_at
+                        }
                     }
-                }
-                return res
+                    return res
+            else:
+                if self.id is None:
+                    res, data = {}, []
+                    for i in self.query.all():
+                        incident = {
+                            "id": i.id,
+                            "component_id": i.component_id,
+                            "name": i.name,
+                            "status": i.status,
+                            "visible": i.visible,
+                            "message": i.message,
+                            "scheduled_at": i.scheduled_at,
+                            "created_at": i.created_at,
+                            "updated_at": i.updated_at,
+                            "deleted_at": i.deleted_at
+                        }
+                        if i.deleted_at is None:
+                            data.append(incident)
+                    res['total_count'] = len(data)
+                    if lim is not None:
+                        if index is not None:
+                            res['data'] = data[int(index): int(lim) + int(index)]
+                        else:
+                            res['data'] = data[:int(lim)]
+                        res['record_count'] = len(res['data'])
+                    if lim is None:
+                        if index is not None:
+                            res['data'] = data[int(index):]
+                        else:
+                            res['data'] = data
+                        res['record_count'] = len(res['data'])
+                    return res
+                if self.id is not None:
+                    if self.get().deleted_at is None:
+                        res = {
+                            "data": {
+                                "id": self.get().id,
+                                "component_id": self.get().component_id,
+                                "name": self.get().name,
+                                "status": self.get().status,
+                                "visible": self.get().visible,
+                                "message": self.get().message,
+                                "scheduled_at": self.get().scheduled_at,
+                                "created_at": self.get().created_at,
+                                "updated_at": self.get().updated_at,
+                                "deleted_at": self.get().deleted_at
+                            }
+                        }
+                    else:
+                        res = {
+                            "error": {
+                                "message": "Not found incident."
+                            }
+                        }
+                    return res
+
         except Exception as e:
             print("ERROR: ", e)
             res = {
-                    "error": {
-                        "message": "Not found object"
-                    }
+                "error": {
+                    "message": "Not found incident."
                 }
+            }
             return res
 
     def insert(self):
@@ -150,9 +207,16 @@ class Incident(db.Model):
         """
         try:
             db.session.add(self)
-            return db.session.commit()
+            db.session.commit()
+            return {"data": {"successed": "True"}}
         except Exception as e:
-            return e.__cause__.args[1]
+            print(e)
+            res = {
+                "error": {
+                    "message": "False"
+                }
+            }
+            return res
 
     def update(self, **arguments):
         """Update a Incident
@@ -193,15 +257,38 @@ class Incident(db.Model):
         """
         try:
             if self.id is None:
+                data = []
                 for i in self.query.all():
-                    i.delete_at = now
-                return db.session.commit()
-            if self.id is not None and type(self.id) is int and self.id >= 0:
+                    if i.deleted_at is None:
+                        i.deleted_at = now
+                        data.append({"message": "incident '" + str(i.name) + "' deleted at " + str(i.deleted_at)})
+                db.session.commit()
+                return {"data": data}
+            if type(self.id) is int and self.id >= 0:
                 target = self.query.get(self.id)
-                target.deleted_at = now
-                return db.session.commit()
+                if target.deleted_at is None:
+                    target.deleted_at = now
+                    db.session.commit()
+                    res = {
+                        "data": {
+                            "message": "incident '" + str(target.name) + "' deleted at " + str(target.deleted_at)
+                        }
+                    }
+                else:
+                    res = {
+                        "error": {
+                            "message": "Not found incident."
+                        }
+                    }
+                return res
         except Exception as e:
-            return e.__cause__.args[1]
+            print("ERROR: ", e)
+            res = {
+                "error": {
+                    "message": "Not found incident."
+                }
+            }
+            return res
 
 
 class IncidentTemplate(db.Model):
