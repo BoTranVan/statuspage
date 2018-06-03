@@ -76,9 +76,10 @@ class Incident(db.Model):
             if type(self.id) is int and self.id >= 0:
                 return self.query.get(self.id)
         except Exception as e:
-            return e.__cause__.args[1]
+            print("ERROR: ", e)
+            return {"error": {"message": "Not found incident(s)."}}
 
-    def get_json(self, lim=None, index=None, deleted=False):
+    def get_json(self, lim=None, index=None, deleted=False, field_lists=None):
         """Return a json response
 
         [description]
@@ -88,18 +89,10 @@ class Incident(db.Model):
                 if self.id is None:
                     res, data = {}, []
                     for i in self.query.all():
-                        incident = {
-                            "id": i.id,
-                            "component_id": i.component_id,
-                            "name": i.name,
-                            "status": i.status,
-                            "visible": i.visible,
-                            "message": i.message,
-                            "scheduled_at": i.scheduled_at,
-                            "created_at": i.created_at,
-                            "updated_at": i.updated_at,
-                            "deleted_at": i.deleted_at
-                        }
+                        if field_lists is None:
+                            incident = i.get_fields()
+                        else:
+                            incident = i.get_fields(field_lists)
                         data.append(incident)
                     res['total_count'] = len(data)
                     if lim is not None:
@@ -116,38 +109,20 @@ class Incident(db.Model):
                         res['record_count'] = len(res['data'])
                     return res
                 if type(self.id) is int and self.id >= 0:
-                    res = {
-                        "data": {
-                            "id": self.get().id,
-                            "component_id": self.get().component_id,
-                            "name": self.get().name,
-                            "status": self.get().status,
-                            "visible": self.get().visible,
-                            "message": self.get().message,
-                            "scheduled_at": self.get().scheduled_at,
-                            "created_at": self.get().created_at,
-                            "updated_at": self.get().updated_at,
-                            "deleted_at": self.get().deleted_at
-                        }
-                    }
+                    if field_lists is None:
+                        res = self.get_fields()
+                    else:
+                        res = self.get_fields(field_lists)
                     return res
             else:
                 if self.id is None:
                     res, data = {}, []
                     for i in self.query.all():
-                        incident = {
-                            "id": i.id,
-                            "component_id": i.component_id,
-                            "name": i.name,
-                            "status": i.status,
-                            "visible": i.visible,
-                            "message": i.message,
-                            "scheduled_at": i.scheduled_at,
-                            "created_at": i.created_at,
-                            "updated_at": i.updated_at,
-                            "deleted_at": i.deleted_at
-                        }
                         if i.deleted_at is None:
+                            if field_lists is None:
+                                incident = i.get_fields()
+                            else:
+                                incident = i.get_fields(field_lists)
                             data.append(incident)
                     res['total_count'] = len(data)
                     if lim is not None:
@@ -164,37 +139,21 @@ class Incident(db.Model):
                         res['record_count'] = len(res['data'])
                     return res
                 if self.id is not None:
-                    if self.get().deleted_at is None:
-                        res = {
-                            "data": {
-                                "id": self.get().id,
-                                "component_id": self.get().component_id,
-                                "name": self.get().name,
-                                "status": self.get().status,
-                                "visible": self.get().visible,
-                                "message": self.get().message,
-                                "scheduled_at": self.get().scheduled_at,
-                                "created_at": self.get().created_at,
-                                "updated_at": self.get().updated_at,
-                                "deleted_at": self.get().deleted_at
-                            }
-                        }
+                    if self.deleted_at is None:
+                        if field_lists is None:
+                            res = self.get_fields()
+                        else:
+                            res = self.get_fields(field_lists)
                     else:
                         res = {
                             "error": {
-                                "message": "Not found incident."
+                                "message": "Not found incident(s)."
                             }
                         }
                     return res
-
         except Exception as e:
             print("ERROR: ", e)
-            res = {
-                "error": {
-                    "message": "Not found incident."
-                }
-            }
-            return res
+            return {"error": {"message": "Not found incident(s)."}}
 
     def insert(self):
         """Create a new Incident.
@@ -208,15 +167,10 @@ class Incident(db.Model):
         try:
             db.session.add(self)
             db.session.commit()
-            return {"data": {"successed": "True"}}
+            return {"data": {"successed ": str(self.id) + " - " + str(self.name)}}
         except Exception as e:
-            print(e)
-            res = {
-                "error": {
-                    "message": "False"
-                }
-            }
-            return res
+            print("ERROR: ", e)
+            return {"error": {"message": "Not found incident(s)."}}
 
     def update(self, **arguments):
         """Update a Incident
@@ -283,12 +237,53 @@ class Incident(db.Model):
                 return res
         except Exception as e:
             print("ERROR: ", e)
-            res = {
-                "error": {
-                    "message": "Not found incident."
-                }
-            }
+            return {"error": {"message": "Not found incident(s)."}}
+
+    def get_fields(self, field_lists=None):
+        try:
+            if field_lists is not None:
+                res = {}
+                field_lists = str(field_lists).split(",")
+                if "id" in field_lists:
+                    res['id'] = self.id
+                if "component_id" in field_lists:
+                    res['component_id'] = self.component_id
+                if "name" in field_lists:
+                    res['name'] = self.get().name
+                if "status" in field_lists:
+                    res['status'] = self.get().status
+                if "visible" in field_lists:
+                    res['visible'] = self.get().visible
+                if "message" in field_lists:
+                    res['message'] = self.get().message
+                if "scheduled_at" in field_lists:
+                    res['scheduled_at'] = self.get().scheduled_at
+                if "created_at" in field_lists:
+                    res['created_at'] = self.get().created_at
+                if "updated_at" in field_lists:
+                    res['updated_at'] = self.get().updated_at
+                if "deleted_at" in field_lists:
+                    res['deleted_at'] = self.get().deleted_at
+                if "id" not in field_lists and "component_id" not in field_lists and "name" not in field_lists and "status" not in field_lists and "visible" not in field_lists and "message" not in field_lists and "scheduled_at" not in field_lists and "created_at" not in field_lists and "updated_at" not in field_lists and "deleted_at" not in field_lists:
+                    res['id'] = self.id
+                    res['name'] = self.get().name
+            else:
+                res = {
+                        "id": self.id,
+                        "name": self.get().name,
+                        "component_id": self.get().component_id,
+                        "status": self.get().status,
+                        "visible": self.get().visible,
+                        "message": self.get().message,
+                        "scheduled_at": self.get().scheduled_at,
+                        "created_at": self.get().created_at,
+                        "updated_at": self.get().updated_at,
+                        "deleted_at": self.get().deleted_at
+                    }
             return res
+        except Exception as e:
+            print("ERROR: ", e)
+            return {"error": {"message": "Not found incident(s)."}}
 
 
 class IncidentTemplate(db.Model):
