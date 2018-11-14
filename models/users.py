@@ -44,7 +44,8 @@ class User(db.Model):
     updated_at = db.Column(db.String(26), default=now)
     google_2fa_secret = db.Column(db.String(255))
 
-    # def __init__(self, id, username, password, remember_token, email, api_key, active, level, created_at, updated_at, google_2fa_secret):
+    # def __init__(self, id, username, password, remember_token, email,
+    # api_key, active, level, created_at, updated_at, google_2fa_secret):
     #     self.id = id
     #     self.username = username
     #     self.password = password

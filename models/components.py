@@ -41,7 +41,8 @@ class Component(db.Model):
     link = db.Column(db.Text)
     status = db.Column(db.Integer, default=0, index=True)
     order = db.Column(db.Integer, default=0, index=True)
-    group_id = db.Column(db.Integer, db.ForeignKey('component_groups.id'), index=True)
+    group_id = db.Column(db.Integer,
+        db.ForeignKey('component_groups.id'), index=True)
     enabled = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.String(26), default=now)
     updated_at = db.Column(db.String(26), default=now)
@@ -273,8 +274,10 @@ class ComponentTag(db.Model):
     __tablename__ = "component_tag"
 
     id = db.Column(db.Integer, primary_key=True)
-    component_id = db.Column(db.Integer, db.ForeignKey('components.id'), nullable=False, index=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), nullable=False, index=True)
+    component_id = db.Column(db.Integer,
+        db.ForeignKey('components.id'), nullable=False, index=True)
+    tag_id = db.Column(db.Integer,
+        db.ForeignKey('tags.id'), nullable=False, index=True)
 
     # def __init__(self, id, component_id, tag_id):
     #     self.id = id

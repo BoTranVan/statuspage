@@ -39,7 +39,8 @@ class Job(db.Model):
     available_at = db.Column(db.String(26), nullable=False)
     created_at = db.Column(db.String(26), default=now)
 
-    # def __init__(self, id, queue, payload, attempts, reserved, reserved_at, available_at, created_at):
+    # def __init__(self, id, queue, payload, attempts,
+    # reserved, reserved_at, available_at, created_at):
     #     self.id = id
     #     self.queue = queue
     #     self.payload = payload
